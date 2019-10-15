@@ -1,0 +1,97 @@
+<html>
+<head>
+    <link rel="stylesheet" href="../../static/css/layui.css"  media="all">
+</head>
+
+<body>
+<ul class="layui-nav layui-bg-cyan"  style="width:50%;margin:0 auto;">
+    {{range $k,$v := .navilist}}
+        <li class="{{$v.Css}}"><a href="{{$v.Link}}">{{$v.Button}}</a></li>
+
+    {{end}}
+
+</ul>
+
+<div style="width:50%;margin:0 auto;">
+    <div style="padding-top: 10px;padding-left: 20px;font-size: 18px;">
+
+        [ {{.gettag}} ]
+
+    </div>
+    <div style="padding-top: 10px;padding-left: 20px;">
+
+        {{range $k,$v := .articlelist}}
+        <h2 style="padding-top: 10px;"><a href="#">{{$v.Title}}</a></h2>
+        <p>{{$v.Article_abstract}}</p>
+        {{end}}
+
+
+
+    </div>
+
+    <div id="demo6" style="align-content: center;padding-top: 50px;text-align: center"></div>
+
+
+</div>
+
+
+
+
+
+<script src="../../static/layui.js"></script>
+<script>
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+    });
+
+
+    layui.use(['laypage', 'layer'], function(){
+        var laypage = layui.laypage
+            ,layer = layui.layer;
+
+
+        //只显示上一页、下一页
+        laypage.render({
+            elem: 'demo6'
+            ,count: 50
+            ,layout: ['prev', 'next']
+            ,jump: function(obj, first){
+                if(!first){
+                    layer.msg('第 '+ obj.curr +' 页');
+                }
+            }
+        });
+
+
+
+
+
+
+
+        //调用分页
+        laypage.render({
+            elem: 'demo20'
+            ,count: data.length
+            ,jump: function(obj){
+                //模拟渲染
+                document.getElementById('biuuu_city_list').innerHTML = function(){
+                    var arr = []
+                        ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                    layui.each(thisData, function(index, item){
+                        arr.push('<li>'+ item +'</li>');
+                    });
+                    return arr.join('');
+                }();
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
